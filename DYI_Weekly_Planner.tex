@@ -47,7 +47,7 @@
 %   <hour>________<-sep->___
 %   (#1 is the current hour, right aligned inside a makebox,  also using a vstrut to define heigh
 \newcommand{\DayFillerRowWP}[1]{%
-	\makebox[\HourBondingBoxWP]{\hspace{\fill}#1\hspace{0.5em}}\vstrut{11.5pt}{\color{WriteBgMain}\rule{\DayFillerRulerWidthWP}{0.5pt}}%
+	\makebox[\HourBondingBoxWP]{\hspace{\fill}\hspace{0.5em}}\vstrut{14pt}{\color{WriteBgMain}\rule{\DayFillerRulerWidthWP}{0.5pt}}%
 	\hspace*{\DayFillerSepWP}%
 	{\color{WriteBgMain}\rule{\NotesFillerTotWidthWP}{0.5pt}}}
 % - as above but no <hour>
@@ -55,11 +55,9 @@
 	\vstrut{11.5pt}%
         {\color{WriteBgMain}\rule{\DayFillerWidthWP}{0.8pt}}%
         \hspace*{\DayFillerSepWP}%
-        {\color{WriteBgMain}\rule{\NotesFillerTotWidthWP}{0.5pt}}}
+        {\color{WriteBgMain}\rule{\NotesFillerTotWidthWP}{0.8pt}}}
 % - then fill, with hour intervals
 \newcommand{\DayFillerWP}{%
-	\DayFillerRowWP{6}\break%
-	\DayFillerRowWP{8}\break%
 	\DayFillerRowWP{10}\break%
 	\DayFillerRowWP{12}\break%
 	\DayFillerRowWP{2}\break%
