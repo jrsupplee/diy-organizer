@@ -51,7 +51,7 @@
 \newcolumntype{R}{>{\hfill\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\WkdayColWidthMinicalMP}}
 % Tabular
 \newcommand{\MonthMiniCalOnMonthlyPlanner}[2]{%
-        \begin{tabular*}{\NoteColWidthMP}[t]{@{}*{5}{P}QR@{}}
+        \begin{tabular*}{\NoteColWidthMP}[t]{@{}R*{5}{P}Q@{}}
 		\multicolumn{7}{>{\columncolor{HeadMainBg}}c}{\scriptsize\vstrut{1.1em}\bfseries\color{white}#1} \\
                 \rowcolor{HeadSubBg}
                 \WkdayTblRow{\hspace*{\fill}}\\
@@ -158,7 +158,7 @@
 	\begin{tabular*}{\textwidth}{NMMO}
 		\rowcolor{HeadMainBgMP}%
 		% \makebox[1em] centers \ding{93} on the gray left vertical bar below, see \NoteColumn
-		\bfseries\vstrut{1.1em}{\color{white}\makebox[1em]{\ding{93}}\ \ding{50}\hfill} & \bfseries\vstrut{1.1em}\color{white}\Monday & \bfseries\vstrut{1.1em}\color{white}\Tuesday & \bfseries\vstrut{1.1em}\color{white}\Wednesday \\
+		\bfseries\vstrut{1.1em}{\color{white}\makebox[1em]{\ding{93}}\ \ding{50}\hfill} & \bfseries\vstrut{1.1em}\color{white}\Sunday & \bfseries\vstrut{1.1em}\color{white}\Monday & \bfseries\vstrut{1.1em}\color{white}\Tuesday \\
 		% insert a dummy row: white, (cant use vspacing on previous \tabularnewline because it will turn colored as previous row)
 		\\[-0.8em]
 		\NoteColumn{#2}{#3}{#4}{#5}
@@ -177,7 +177,7 @@
 
 	\begin{tabular*}{\textwidth}{MMMO}
 		\rowcolor{HeadMainBgMP}
-		\bfseries\vstrut{1.1em}\color{white}\Thursday & \bfseries\vstrut{1.1em}\color{white}\Friday & \bfseries\vstrut{1.1em}\color{white}\Saturday & \bfseries\vstrut{1.1em}\color{white}\Sunday \\
+		\bfseries\vstrut{1.1em}\color{white}\Wednesday & \bfseries\vstrut{1.1em}\color{white}\Thursday & \bfseries\vstrut{1.1em}\color{white}\Friday & \bfseries\vstrut{1.1em}\color{white}\Saturday \\
 		% insert a dummy row: white, (cant use vspacing on previous \tabularnewline because it will turn colored as previous row)
 		\\[-0.8em]
 		#1{\CellFormatMP}{\CellFormatMPDisabled}

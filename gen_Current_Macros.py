@@ -39,6 +39,9 @@ import sys
 import math
 import calendar
 
+
+calendar.setfirstweekday(calendar.SUNDAY)
+
 #------------------------------------------------------------------------------
 
 # using abbrevs in LaTeX macro names (can't use the locales here, using generic POSIX)
@@ -103,7 +106,6 @@ def write_out_i18n_macros(file):
 # if required trough 'postfix' optional arg (for previous and next year calendars
 
 def gen_macro_MonthTbl(month, year, *postfix):
-    day_of_week_month_start  = calendar.monthrange(year, month)[0]
     month_length             = calendar.monthrange(year, month)[1]
 
     # Macro optional postfix: 'Prev' or 'Next' (for previous or next year monthly calendars)
@@ -116,25 +118,26 @@ def gen_macro_MonthTbl(month, year, *postfix):
     # macro def start
     macro_def = '\\newcommand{\MonthTbl' + month_abbr_C[ month ] + postfix[0] + '}[1][\hfill]{%\n'
 
-    current_day = - day_of_week_month_start + 1
-    for row in range(6):                                # a month may have up to 6 rows
-        for column in range(7):                         # 7 days a week
-
-            end_of_current_day_insert = '} & '          # if in the middle of the table
-            if column == 6 and row != 5:  
-                end_of_current_day_insert = '} \\\\\n'  # if at the end of a row, except last
-            if column == 6 and row == 5:
-                end_of_current_day_insert = '}'         # at the end of last row
-
-            if (current_day > 0) and (current_day <= month_length):     # human-readable alignment: insert spaces as required 
-                if (current_day < 10):                                          # - days 1-9
-                    macro_def += ' #1{' + str(current_day) + end_of_current_day_insert
-                else:                                                           # - days 10-28/29/30/31
-                    macro_def += '#1{' + str(current_day) + end_of_current_day_insert
+    cal = calendar.Calendar( calendar.SUNDAY )
+    
+    for week in cal.monthdatescalendar(year, month):
+        for day in week:
+            #print day
+            if (day.month == month):     # human-readable alignment: insert spaces as required 
+                if (day.day < 10):                                          # - days 1-9
+                    macro_def += ' '
+                macro_def += '#1{' + str(day.day)
             else:                                                               # - no days
-                macro_def += '  #1{' + end_of_current_day_insert
+                macro_def += ' #1{'
 
-            current_day = current_day + 1
+            #print day.weekday
+            if day.weekday() == calendar.SATURDAY:
+                if day.day == month_length or day.month != month:
+                    macro_def += '}'         # at the end of last row
+                else:
+                    macro_def += '} \\\\\n'
+            else:
+                macro_def += '} & '
 
     # macro def end
     macro_def += '}\n'
@@ -183,59 +186,36 @@ def write_out_MonthTbl_macros(year, file):
 
 def gen_macro_MPMonthLeft(month, year):
 
-    day_of_week_month_start  = calendar.monthrange(year, month)[0]
     month_length             = calendar.monthrange(year, month)[1]
-
-    # generate monthly calendar tables for current, previous and next
-    myCal= calendar.Calendar()
-    curr_month = myCal.monthdayscalendar(year, month)
-    if month == 1:      # curr month is January, prev month is December last year
-        prev_month = myCal.monthdayscalendar(year - 1, 12)
-    else:
-        prev_month = myCal.monthdayscalendar(year, month - 1)
-    if month == 12:      # curr month is December, next month is January next year
-        next_month = myCal.monthdayscalendar(year + 1, 1)
-    else:
-        next_month = myCal.monthdayscalendar(year, month + 1)
-
+    myCal= calendar.Calendar(calendar.SUNDAY)
+    weeks = myCal.monthdatescalendar(year, month)
+    
     # macro start
     macro_def = '\\newcommand{\MP' + month_abbr_C[ month ] + 'Left}[2]{%\n' 
 
-    # first row, may have days from previous month
-    row = 0
-    for col in range(3):                        # Mon, Tue, Wed
-        if curr_month[row][col] == 0:
-            macro_def += '& #2{' + str(prev_month[len(prev_month)-1][col]) + '} '      # days, max range 25-31, prev month
-        else:
-            macro_def += '&  #1{' + str(curr_month[row][col]) + '} '                   # days, max range 1-7, curr month
-    macro_def += '\\\\\n'
-
-    # second to 4th rows
-    for row in range(1,4):
-        for col in range(3):                                                            # Mon, Tue, Wed
-            if (curr_month[row][col] < 10):                                             # human readable pretty printing
-                macro_def += '&  #1{' + str(curr_month[row][col]) + '} '
+    for week_num in range(len(weeks)):
+        week = weeks[week_num]
+        for col in range(3):
+            macro_def += '& '
+            
+            if week[col].day < 10:
+                macro_def += ' '
+                
+            if week[col].month != month:
+                macro_def += '#2{' + str(week[col].day) + '} '  # days, max range 25-31, prev month
             else:
-                macro_def += '& #1{' + str(curr_month[row][col]) + '} '
-        macro_def += '\\\\\n'
+                macro_def += '#1{' + str(week[col].day) + '} ' # days, max range 1-7, curr month
+                
+            #if week[col].weekday() == calendar.TUESDAY:
+            #    macro_def += '} '
+            #else:
+            #    macro_def += '} & '
 
-    # last row, two special cases: days from next month and overflows (sixth_row)
-    row = 4
-    end_of_current_day_insert = '} '
-    for col in range(3):
-        if col == 2:
-            end_of_current_day_insert = '}'
-        if curr_month[row][col] == 0:                                                   # add days from next month
-            macro_def += '&  #2{' + str(next_month[0][col]) + end_of_current_day_insert
-        else:
-            # month spanning on the sixth row ? pass the day+7 as optional arg to #1
-            sixth_row_insert = ''
-            if (len(curr_month) == 6) and (curr_month[5][col] !=0):
-                sixth_row_insert = '[' + str(curr_month[5][col]) + ']'
-            macro_def += '& #1' + sixth_row_insert + '{' + str(curr_month[row][col]) + end_of_current_day_insert
-
-    # macro end
-    macro_def = macro_def + '}\n'
+        if week_num+1 < len(weeks):
+            macro_def += '\\\\\n'
+            
+    macro_def += '}\n'
+    
     return macro_def
 
 
@@ -244,61 +224,31 @@ def gen_macro_MPMonthLeft(month, year):
 # (very similar to the \MP<month>Right, there is no 6 row problem)
 
 def gen_macro_MPMonthRight(month, year):
-    day_of_week_month_start  = calendar.monthrange(year, month)[0]
-    month_length             = calendar.monthrange(year, month)[1]
-
-    # generate monthly calendar tables for current, previous and next
-    myCal= calendar.Calendar()
-    curr_month = myCal.monthdayscalendar(year, month)
-    if month == 1:      # curr month is January, prev month is December last year
-        prev_month = myCal.monthdayscalendar(year - 1, 12)
-    else:
-        prev_month = myCal.monthdayscalendar(year, month - 1)
-    if month == 12:      # curr month is December, next month is January next year
-        next_month = myCal.monthdayscalendar(year + 1, 1)
-    else:
-        next_month = myCal.monthdayscalendar(year, month + 1)
-
+    myCal= calendar.Calendar(calendar.SUNDAY)
+    weeks = myCal.monthdatescalendar(year, month)
+    
     # macro start
     macro_def = '\\newcommand{\MP' + month_abbr_C[ month ] + 'Right}[2]{%\n'
 
-    # first row, may have days from previous month
-    row = 0
-    end_of_current_day_insert = '} & '          # if in the midddle of the table
-    for col in range(3,7):                      # Thu, Fri, Sat, Sun
-        if col == 6:
-            end_of_current_day_insert = '} '    # at end of row
-        if curr_month[row][col] == 0:
-            macro_def += '#2{' + str(prev_month[len(prev_month)-1][col]) + end_of_current_day_insert      # days from prev month: possible range 25-31,
-        else:
-            macro_def += ' #1{' + str(curr_month[row][col]) + end_of_current_day_insert                   # days from curr month: possible range 1-7
-    macro_def += '\\\\\n'
-
-    # second to 4th row
-    for row in range(1,4):
-        end_of_current_day_insert = '} & '
-        for col in range(3,7):                  # Thu, Fri, Sat, Sun
-            if col == 6:
-                end_of_current_day_insert = '} '
-            if (curr_month[row][col] < 10):     # pretty printing
-                macro_def += ' #1{' + str(curr_month[row][col]) + end_of_current_day_insert
+    for week_num in range(len(weeks)):
+        week = weeks[week_num]
+        for col in range(3,7):
+            if col != 3:
+                macro_def += '& '
+            
+            if week[col].day < 10:
+                macro_def += ' '
+                
+            if week[col].month != month:
+                macro_def += '#2{' + str(week[col].day) + '} '  # days, max range 25-31, prev month
             else:
-                macro_def += '#1{' + str(curr_month[row][col]) + end_of_current_day_insert
-        macro_def += '\\\\\n'
+                macro_def += '#1{' + str(week[col].day) + '} ' # days, max range 1-7, curr month
+                
+        if week_num+1 < len(weeks):
+            macro_def += '\\\\\n'
+            
+    macro_def += '}\n'
     
-    # last row, special case: days from next month
-    row = 4
-    end_of_current_day_insert = '} & '
-    for col in range(3,7):                      # Thu, Fri, Sat, Sun
-        if col == 6:
-            end_of_current_day_insert = '}'
-        if curr_month[row][col] == 0:           # add days from next month
-            macro_def += ' #2{' + str(next_month[0][col]) + end_of_current_day_insert
-        else:
-            macro_def += '#1' + '{' + str(curr_month[row][col]) + end_of_current_day_insert
-
-    # macro end
-    macro_def = macro_def + '}\n'
     return macro_def
 
 
@@ -324,7 +274,7 @@ def yeardatescalendar(year):
     # week 0 is []
     weeks_list = [[]]
 
-    myCal= calendar.Calendar()
+    myCal= calendar.Calendar(calendar.SUNDAY)
     weeks_list +=  myCal.monthdatescalendar(year, 1)            # Jan goes in unconditionally
     for m in range(2, 13):
         curr_month = myCal.monthdatescalendar(year, m)
