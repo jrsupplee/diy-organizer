@@ -22,7 +22,8 @@ year = 2013
 
 # Locale -- uncomment one only, use utf-8 encoding ONLY
 #
-locale.setlocale(locale.LC_ALL, 'en_AU.utf-8')      # Australia
+locale.setlocale(locale.LC_ALL, 'en_US.utf-8')
+#locale.setlocale(locale.LC_ALL, 'en_AU.utf-8')      # Australia
 #locale.setlocale(locale.LC_ALL, 'en_GB.utf-8')      # Great Britain
 #locale.setlocale(locale.LC_ALL, 'fr_FR.utf-8')      # France
 #locale.setlocale(locale.LC_ALL, 'de_DE.utf-8')      # Deuchland
