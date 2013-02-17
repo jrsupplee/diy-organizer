@@ -198,6 +198,10 @@ def gen_macro_MPMonthLeft(month, year):
     macro_def = '\\newcommand{\MP' + month_abbr_C[ month ] + 'Left}[2]{%\n' 
 
     for week_num in range(len(weeks)):
+        if week_num > 4:
+            print >> sys.stderr, '%i-%i has more than 5 rows.  Truncated.' % (year, month)
+            break
+            
         week = weeks[week_num]
         for col in range(3):
             macro_def += '& '
@@ -235,6 +239,10 @@ def gen_macro_MPMonthRight(month, year):
     macro_def = '\\newcommand{\MP' + month_abbr_C[ month ] + 'Right}[2]{%\n'
 
     for week_num in range(len(weeks)):
+        if week_num > 4:
+            print >> sys.stderr, '%i-%i has more than 5 rows.  Truncated.' % (year, month)
+            break
+            
         week = weeks[week_num]
         for col in range(3,7):
             if col != 3:
