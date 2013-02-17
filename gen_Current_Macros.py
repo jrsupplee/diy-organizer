@@ -4,16 +4,15 @@ import locale
 
 # DIY Calendar
 #
-# gen_Current_Macros.py -- generated specific macros for given year and locale
-# ver 0.5.2, 23 Sep 2008
+# gen_Current_Macros.py -- generate specific TeX macros for given year and locale
 #
 # This script prints out the LaTeX support macros for the DIY Planner, for the given year
 #
 # There are two types of functions:
 #       - gen_macro_<...>       -- generates a LaTeX macro, page and language independent
-#       - write_out_<...>           -- write out LaTeX files
+#       - write_out_<...>       -- write out LaTeX files
 #
-# Notes: It is assumed week starts Monday, European convention
+# Notes: It is assumed week starts on Sunday
 
 # User configuration:
 
