@@ -31,11 +31,11 @@
 %        - align to the 0.5em of right (supress the intercolumn space for better control)
 %	 - color affects space (inserts struts in current font), put it after font change
 % - weekday
-\newcolumntype{W}{>{\hfill\normalfont\footnotesize}p{\WkdayColWidthMonthTblYC}<{\hspace*{0.5em}}@{\extracolsep\fill}}
+\newcolumntype{W}{>{\hspace*{\fill}\normalfont\footnotesize}p{\WkdayColWidthMonthTblYC}<{\hspace*{\fill}}@{\extracolsep\fill}}
 % - Saturday
-\newcolumntype{S}{>{\hfill\normalfont\footnotesize\color{WeekendDay}}p{\WkdayColWidthMonthTblYC}<{\hspace*{0.5em}}@{\extracolsep\fill}}
+\newcolumntype{S}{>{\hspace*{\fill}\normalfont\footnotesize\color{WeekendDay}}p{\WkdayColWidthMonthTblYC}<{\hspace*{\fill}}@{\extracolsep\fill}}
 % - Sunday
-\newcolumntype{Z}{>{\hfill\normalfont\footnotesize\color{WeekendDay}}p{\WkdayColWidthMonthTblYC}<{\hspace*{0.5em}}}
+\newcolumntype{Z}{>{\hspace*{\fill}\normalfont\footnotesize\color{WeekendDay}}p{\WkdayColWidthMonthTblYC}<{\hspace*{\fill}}}
 
 \newcommand{\MonthTblYC}[1]{%
 	\begin{tabular*}{\MonthTblWidthYC}[t]{@{}Z*{5}{W}S@{}}

@@ -68,11 +68,11 @@
 % Monthly minicalendars on Weekly Planner
 % Column types I,J,K
 % - weeekdays
-\newcolumntype{I}{>{\hfill\bfseries\tiny}p{\MinicalColWidthWP}@{\extracolsep\fill}}
+\newcolumntype{I}{>{\hspace*{\fill}\bfseries\tiny}p{\MinicalColWidthWP}<{\hspace*{\fill}}@{\extracolsep\fill}}
 % - Saturday
-\newcolumntype{J}{>{\hfill\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\MinicalColWidthWP}@{\extracolsep\fill}}
+\newcolumntype{J}{>{\hspace*{\fill}\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\MinicalColWidthWP}<{\hspace*{\fill}}@{\extracolsep\fill}}
 % - Sunday (last column)
-\newcolumntype{K}{>{\hfill\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\MinicalColWidthWP}}
+\newcolumntype{K}{>{\hspace*{\fill}\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\MinicalColWidthWP}<{\hspace*{\fill}}}
 % - Monthly Minicals, center the weekdays headline
 \newcommand{\myCentering}[1]{\hspace*{\fill}#1\hspace*{\fill}}
 \newcommand{\MonthMiniCalWP}[2]{%
@@ -87,12 +87,12 @@
 % Day entry in Weekly Planner
 \newcommand{\DayWP}[1]{%
 	% gray shading bar
-	\makebox[0pt][l]{\smash[b]{\color{WriteBgSec}\rule[0.4\baselineskip]{\DayFillerWidthWP}{0.5\baselineskip}}}%
+	\makebox[0pt][l]{\smash[b]{\color{WriteBgSec}\rule[-0.3\baselineskip]{\DayFillerWidthWP}{1.4\baselineskip}}}%
 	% Day (e.g. Monday 1 Jan)
 	% Notes: the parbox leaves the current insertion point (for the next box)
 	%        at the start of the Notes 'column' (also align text left)
 	%        so it joins with the Notes header
-	\parbox[t]{\DayFillerTotWidthWP}{\large #1\hrulefill}%
+	\parbox[t]{\DayFillerTotWidthWP}{\hspace{3pt}\large #1\hrulefill}%
 	\setlength{\unitlength}{1mm}%
 	\begin{picture}(40,8)
 		\put(20,0){\oval[2](40,8)[t]}
@@ -104,8 +104,8 @@
 
 % Notes entry in Weekly Planner (right page, bottom section)
 \newcommand{\NotesWP}[6]{%
-	\makebox[0pt][l]{\smash[b]{\color{WriteBgSec}\rule[0.4\baselineskip]{\DayFillerWidthWP}{0.5\baselineskip}}}%
-	\parbox[t]{\DayFillerTotWidthWP}{\large\Notes\hrulefill}%
+	\makebox[0pt][l]{\smash[b]{\color{WriteBgSec}\rule[-0.3\baselineskip]{\DayFillerWidthWP}{1.4\baselineskip}}}%
+	\parbox[t]{\DayFillerTotWidthWP}{\hspace{3pt}\large\Notes\hrulefill}%
 	\setlength{\unitlength}{1mm}%
         \begin{picture}(40,8)
                 \put(20,0){\oval[2](40,8)[t]}

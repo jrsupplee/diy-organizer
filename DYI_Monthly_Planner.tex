@@ -44,11 +44,11 @@
 \newlength{\WkdayColWidthMinicalMP}
 \setlength{\WkdayColWidthMinicalMP}{\NoteColWidthMP / 7}
 %   - weeekdays
-\newcolumntype{P}{>{\hfill\bfseries\tiny}p{\WkdayColWidthMinicalMP}@{\extracolsep\fill}}
+\newcolumntype{P}{>{\hspace*{\fill}\bfseries\tiny}p{\WkdayColWidthMinicalMP}<{\hspace*{\fill}}@{\extracolsep\fill}}
 %   - Saturday (\vstrut is for the benefit of \color)
-\newcolumntype{Q}{>{\hfill\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\WkdayColWidthMinicalMP}@{\extracolsep\fill}}
+\newcolumntype{Q}{>{\hspace*{\fill}\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\WkdayColWidthMinicalMP}<{\hspace*{\fill}}@{\extracolsep\fill}}
 %   - Sunday (\vstrut is for the benefit of \color)
-\newcolumntype{R}{>{\hfill\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\WkdayColWidthMinicalMP}}
+\newcolumntype{R}{>{\hspace*{\fill}\bfseries\tiny\vstrut{0pt}\color{WeekendDay}}p{\WkdayColWidthMinicalMP}<{\hspace*{\fill}}}
 % Tabular
 \newcommand{\MonthMiniCalOnMonthlyPlanner}[2]{%
         \begin{tabular*}{\NoteColWidthMP}[t]{@{}R*{5}{P}Q@{}}
