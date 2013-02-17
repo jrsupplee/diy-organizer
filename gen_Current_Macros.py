@@ -119,8 +119,9 @@ def gen_macro_MonthTbl(month, year, *postfix):
     macro_def = '\\newcommand{\MonthTbl' + month_abbr_C[ month ] + postfix[0] + '}[1][\hfill]{%\n'
 
     cal = calendar.Calendar( calendar.SUNDAY )
-    
-    for week in cal.monthdatescalendar(year, month):
+    weeks = cal.monthdatescalendar(year, month)
+    for week_num in range(len(weeks)):
+        week = weeks[week_num]
         for day in week:
             #print day
             if (day.month == month):     # human-readable alignment: insert spaces as required 
@@ -134,6 +135,9 @@ def gen_macro_MonthTbl(month, year, *postfix):
             if day.weekday() == calendar.SATURDAY:
                 if day.day == month_length or day.month != month:
                     macro_def += '}'         # at the end of last row
+                    if week_num < 5:
+                        macro_def += ' \\\\\n#1{} &  #1{} &  #1{} &  #1{} &  #1{} &  #1{} &  #1{}'
+            
                 else:
                     macro_def += '} \\\\\n'
             else:
