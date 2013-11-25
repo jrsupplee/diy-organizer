@@ -16,8 +16,6 @@ import locale
 
 # User configuration:
 
-# Year to generate for
-year = 2013
 
 # Locale -- uncomment one only, use utf-8 encoding ONLY
 #
@@ -267,11 +265,11 @@ def gen_macro_MPMonthRight(month, year):
 #--------------------------------------------------------------------
 # Generate and write out table macros for the Monthly Planner
 
-def write_out_MP_macros(year, file):
+def write_out_MP_macros(year, start_month, file):
     MP_macros_FH = open(file, 'w')
     MP_macros_FH.writelines('% Monthly Planner tables macros for ' + str(year) + '\n\n\n')
 
-    for m in range(1, 13):
+    for m in range(start_month, 13):
        MP_macros_FH.writelines(gen_macro_MPMonthLeft(m, year) + '\n')
        MP_macros_FH.writelines(gen_macro_MPMonthRight(m, year) + '\n')
 
@@ -302,13 +300,13 @@ def yeardatescalendar(year):
 # Generate and write out table macros for the Weekly Planner
 # special cases: first week may start Dec prev year, last week may end Jan next year
 
-def write_out_WP_macros(year, file):
+def write_out_WP_macros(year, start_week, file):
     WP_macros_FH = open(file, 'w')
     WP_macros_FH.writelines('% Weekly Planner macros for ' + str(year) + '\n\n\n')
 
     weeks = yeardatescalendar(year)
 
-    for w in range(1, len(weeks)):
+    for w in range(start_week, len(weeks)):
         curr_m  = weeks[w][6].month         # current month: from last day-of-week
         other_m = weeks[w][0].month         # month of first day-of-week: current month or previous
 
@@ -369,8 +367,21 @@ def write_out_WP_macros(year, file):
 #====================================================================
 # Main
 
+import argparse
+
+ap = argparse.ArgumentParser(
+    description='DIY LaTeX monthly and weekly calendar generator'
+)
+
+ap.add_argument('year', type=int)
+#meg = ap.add_mutually_exclusive_group()
+ap.add_argument('--start-week', type=int, default=1)
+ap.add_argument('--start-month', type=int, default=1)
+
+args = ap.parse_args()
+
 write_out_i18n_macros('DYI_i18n.tex')
-write_out_MonthTbl_macros(year, 'DYI_Month_Tables.tex')
-write_out_MP_macros(year, 'DYI_Monthly_Planner_Tables.tex')
-write_out_WP_macros(year, 'DYI_Weekly_Planner_Tables.tex')
+write_out_MonthTbl_macros(args.year, 'DYI_Month_Tables.tex')
+write_out_MP_macros(args.year, args.start_month, 'DYI_Monthly_Planner_Tables.tex')
+write_out_WP_macros(args.year, args.start_week, 'DYI_Weekly_Planner_Tables.tex')
 
