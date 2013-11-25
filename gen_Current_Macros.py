@@ -1,6 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import locale
+import logging
+
+logging.basicConfig(format='%(levelname)s(%(funcName)s): %(message)s')
+
+#logger = logging.getLogger('diy_calendar')
+
 
 # DIY Calendar
 #
@@ -197,7 +203,7 @@ def gen_macro_MPMonthLeft(month, year):
 
     for week_num in range(len(weeks)):
         if week_num > 4:
-            print >> sys.stderr, '%i-%i has more than 5 rows.  Truncated.' % (year, month)
+            logging.warning( '%i-%i has more than 5 rows.  Calendar truncated.' % (year, month) )
             break
             
         week = weeks[week_num]
@@ -238,7 +244,7 @@ def gen_macro_MPMonthRight(month, year):
 
     for week_num in range(len(weeks)):
         if week_num > 4:
-            print >> sys.stderr, '%i-%i has more than 5 rows.  Truncated.' % (year, month)
+            logging.warning( '%i-%i has more than 5 rows.  Calendar truncated.' % (year, month) )
             break
             
         week = weeks[week_num]
