@@ -19,9 +19,18 @@ Creative Commons
 
 # Configuration
 
-Edit the top of the gen_Current_Macros.py file to set the correct year.
+None
+
+# Problems
+
+Monthly calendars requiring more than 5 rows are truncated, losing the days in the
+truncated 6th row.  You will have to write them in by hand, better yet, submit a
+patch.  The program currently warns you of any truncations.
 
 
 # Usage
 
-Run `make` in the source directory to generate a PDF of a planner for the desired year.
+Run the program inside the directory with the TeX templates.
+
+    diy-calendar [-h] [--start-week week] [--start-month month] year
+
