@@ -17,7 +17,10 @@ import locale
 # User configuration:
 
 # Year to generate for
-year = 2013
+year = 2019
+
+START_WEEK = 1
+START_MONTH = 1
 
 # Locale -- uncomment one only, use utf-8 encoding ONLY
 #
@@ -308,7 +311,7 @@ def write_out_WP_macros(year, file):
 
     weeks = yeardatescalendar(year)
 
-    for w in range(1, len(weeks)):
+    for w in range(START_WEEK, len(weeks)):
         curr_m  = weeks[w][6].month         # current month: from last day-of-week
         other_m = weeks[w][0].month         # month of first day-of-week: current month or previous
 
